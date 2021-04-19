@@ -3,12 +3,11 @@ package middlewares
 import (
 	"context"
 	"encoding/json"
+	"github.com/dgrijalva/jwt-go"
 	"net/http"
 	"strings"
 
 	"github.com/jroopa/offers/pkg/models"
-
-	jwt "github.com/dgrijalva/jwt-go"
 )
 
 //Exception struct
@@ -51,7 +50,7 @@ func JwtVerify(next http.Handler) http.Handler {
 			return
 		}
 
-		ctx := context.WithValue(r.Context(), "user", tk)
+		ctx := context.WithValue(r.Context(), "user", *tk)
 		ctx = context.WithValue(ctx, "userId", tk.UserID)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
