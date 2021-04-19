@@ -24,7 +24,7 @@ func ConnectDB() *gorm.DB {
 	// databaseName := os.Getenv("databaseName")
 	// databaseHost := os.Getenv("databaseHost")
 
-	db, err = gorm.Open("mysql", "root:secret@tcp(127.0.0.1:3307)/GO?parseTime=true")
+	db, err = gorm.Open("mysql", "root:secret@tcp(127.0.0.1:3307)/snippetbox?parseTime=true")
 	if err != nil {
 		log.Fatal("DB connection error")
 	}
@@ -33,14 +33,14 @@ func ConnectDB() *gorm.DB {
 		log.Fatal(err)
 
 	}
-
 	// if no error. Ping is successful
 	fmt.Println("Ping to database successful, connection is still alive")
 
-	defer db.Close()
 	// Migrate the schema
 	db.AutoMigrate(
-		&models.User{})
+		&models.User{},
+		&models.Offers{},
+	)
 
 	fmt.Println("Successfully connected!")
 	return db
