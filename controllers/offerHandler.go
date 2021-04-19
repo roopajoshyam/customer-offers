@@ -12,7 +12,7 @@ import (
 func CreateOffer(w http.ResponseWriter, r *http.Request) {
 	offer := &models.Offers{}
 	json.NewDecoder(r.Body).Decode(offer)
-	log.Printf(" %v",offer.UserID)
+	log.Printf(" %v", offer.UserID)
 	var user models.User
 	userInfo := db.Debug().First(&user, offer.UserID)
 
@@ -32,10 +32,10 @@ func CreateOffer(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetUserOffers(w http.ResponseWriter, r *http.Request) {
-	var id = r.Context().Value("user")
-	log.Printf("user : %v",id)
+	var id = r.Context().Value("user").(models.Token).UserID
+	log.Printf("user : %v", id)
 	var userOffers []models.Offers
-	log.Printf("user info : %v",userOffers)
+	log.Printf("user info : %v", userOffers)
 	offers := db.Debug().Where("user_id = ?", id).Find(&userOffers)
 
 	json.NewEncoder(w).Encode(offers)
